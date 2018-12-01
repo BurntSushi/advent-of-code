@@ -7,3 +7,10 @@ In particular, it should not be possible for any input to cause one of the
 solutions to panic.
 
 I have not spent any time benchmarking the code.
+
+To run a solution, `cd` into its directory and invoke the program with Cargo:
+
+```
+$ cd 2018/aoc01-2
+$ cargo run --release < input/input.txt
+```
