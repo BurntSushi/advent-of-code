@@ -12,7 +12,5 @@ if [ ! -d .git ]; then
 fi
 
 name="$(printf "aoc%02d" "$1")"
-cargo new --bin "$YEAR/$name-1"
-cargo new --bin "$YEAR/$name-2"
-mkdir "$YEAR/$name-1/input"
-mkdir "$YEAR/$name-2/input"
+cargo new --bin "$YEAR/$name"
+mkdir "$YEAR/$name/input"
