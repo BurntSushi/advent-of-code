@@ -1,7 +1,5 @@
 #!/bin/sh
 
-YEAR=2018
-
 if [ $# != 1 ]; then
     echo "Usage: $(basename "$0") <day-number>" >&2
     exit 1
@@ -12,5 +10,5 @@ if [ ! -d .git ]; then
 fi
 
 name="$(printf "aoc%02d" "$1")"
-cargo new --bin "$YEAR/$name"
-mkdir "$YEAR/$name/input"
+cargo new --bin "$name"
+mkdir "$name/input"
