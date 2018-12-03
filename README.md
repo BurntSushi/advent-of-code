@@ -14,3 +14,6 @@ To run a solution, `cd` into its directory and invoke the program with Cargo:
 $ cd 2018/aoc01-2
 $ cargo run --release < input/input.txt
 ```
+
+If you have questions about the code, please open an issue and ask away!
+Beginner questions are very much welcome.
