@@ -79,6 +79,11 @@ impl Grid {
         // This isn't actually guaranteed to be correct. We simply assert that
         // after some fixed number of iterations, our set of finite locations
         // converges.
+        //
+        // I started this trying for a solution that didn't assume a bounding
+        // box size, which would have made this much simpler. At the end of
+        // the day, we're still not fully general because there is no logic
+        // for detecting convergence.
         for step in 0..100 {
             for loc in &self.locations {
                 if self.finite.contains(&loc) {
