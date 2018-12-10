@@ -24,10 +24,7 @@ fn main() -> Result<()> {
         })?;
         points.push(point);
     }
-    if points.is_empty() {
-        return err!("no points given");
-    }
-    let mut points = Points::new(points);
+    let mut points = Points::new(points)?;
 
     for _ in 0..1_000_000 {
         points.step();
@@ -49,9 +46,12 @@ struct Points {
 }
 
 impl Points {
-    fn new(points: Vec<Point>) -> Points {
-        assert!(!points.is_empty());
-        Points { points, seconds: 0 }
+    fn new(points: Vec<Point>) -> Result<Points> {
+        if points.is_empty() {
+            err!("no points given")
+        } else {
+            Ok(Points { points, seconds: 0 })
+        }
     }
 
     fn step(&mut self) {
