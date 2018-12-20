@@ -1,0 +1,8 @@
+[package]
+name = "aoc18"
+version = "0.1.0"
+authors = ["Andrew Gallant <jamslam@gmail.com>"]
+edition = "2018"
+
+[profile.release]
+debug = true
