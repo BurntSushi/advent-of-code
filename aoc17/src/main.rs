@@ -220,9 +220,6 @@ struct Coordinate {
     y: i64,
 }
 
-impl Coordinate {
-}
-
 #[derive(Clone, Debug)]
 struct ClayScan {
     x: RangeInclusive<i64>,
