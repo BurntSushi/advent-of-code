@@ -1,0 +1,5 @@
+[package]
+name = "aoc25"
+version = "0.1.0"
+authors = ["Andrew Gallant <jamslam@gmail.com>"]
+edition = "2018"
