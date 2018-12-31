@@ -1,3 +1,4 @@
+use rayon::prelude::*;
 use std::io::{self, Read, Write};
 use std::mem;
 
@@ -19,16 +20,17 @@ fn part1(polymer: &str) -> Result<()> {
 }
 
 fn part2(polymer: &str) -> Result<()> {
-    let mut best = polymer.len();
-    for b in b'A'..=b'Z' {
-        let unit1 = b as char;
-        let unit2 = (b + 32) as char;
-        let cleansed = polymer.replace(unit1, "").replace(unit2, "");
-        let reacted = react(&cleansed);
-        if reacted.len() < best {
-            best = reacted.len();
-        }
-    }
+    let best = (b'A'..=b'Z')
+        .collect::<Vec<u8>>()
+        .into_par_iter()
+        .map(|b| {
+            let unit1 = b as char;
+            let unit2 = (b + 32) as char;
+            let cleansed = polymer.replace(unit1, "").replace(unit2, "");
+            react(&cleansed).len()
+        })
+        .min()
+        .unwrap_or(polymer.len());
     writeln!(io::stdout(), "best inert length: {}", best)?;
     Ok(())
 }
@@ -41,16 +43,16 @@ fn react(polymer_string: &str) -> String {
         let mut reacted = false;
         let mut i = 1;
         while i < polymer.len() {
-            if reacts(polymer[i-1], polymer[i]) {
+            if reacts(polymer[i - 1], polymer[i]) {
                 reacted = true;
                 i += 2;
                 continue;
             }
-            reacted_polymer.push(polymer[i-1]);
+            reacted_polymer.push(polymer[i - 1]);
             i += 1;
         }
         if i == polymer.len() {
-            reacted_polymer.push(polymer[i-1]);
+            reacted_polymer.push(polymer[i - 1]);
         }
 
         mem::swap(&mut polymer, &mut reacted_polymer);

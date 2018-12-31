@@ -5,3 +5,4 @@ authors = ["Andrew Gallant <jamslam@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+rayon = "1.0.3"
