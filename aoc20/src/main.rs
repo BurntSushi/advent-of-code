@@ -41,6 +41,10 @@ fn distances(
     dists: &mut Distances,
     c: Coordinate,
 ) -> Result<Coordinate> {
+    // N.B. Even though this works for my input, it is most certainly wrong in
+    // the general case.
+    //
+    // See: https://github.com/BurntSushi/advent-of-code/issues/15
     match *expr.kind() {
         | HirKind::Empty
         | HirKind::Literal(hir::Literal::Byte(_))
