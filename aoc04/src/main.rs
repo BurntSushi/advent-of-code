@@ -53,10 +53,10 @@ fn main() -> Result<()> {
     // create a by-minute frequency map for each guard
     let mut minutes_asleep: GuardSleepFrequency = HashMap::new();
     for (&guard_id, events) in events_by_guard.iter() {
-        let mut freq = HashMap::new();
+        let mut freq: [u32; 60] = [0; 60];
         for result in MinutesAsleepIter::new(events) {
             for minute in result? {
-                *freq.entry(minute).or_default() += 1;
+                freq[minute as usize] += 1;
             }
         }
         minutes_asleep.insert(guard_id, freq);
@@ -71,7 +71,7 @@ fn part1(minutes_asleep: &GuardSleepFrequency) -> Result<()> {
     let (&sleepiest, _) = minutes_asleep
         .iter()
         .max_by_key(|&(_, ref freqs)| -> u32 {
-            freqs.values().cloned().sum()
+            freqs.iter().sum()
         })
         // unwrap is OK since we're guaranteed to have at least one event
         .unwrap();
@@ -91,7 +91,7 @@ fn part2(minutes_asleep: &GuardSleepFrequency) -> Result<()> {
             None => continue,
             Some(minute) => minute,
         };
-        let count = freqs[&minute];
+        let count = freqs[minute as usize];
         sleepiest_minutes.insert(guard_id, (minute, count));
     }
     if sleepiest_minutes.is_empty() {
@@ -113,10 +113,12 @@ fn sleepiest_minute(
     minutes_asleep: &GuardSleepFrequency,
     guard_id: GuardID,
 ) -> Option<u32> {
-    minutes_asleep[&guard_id]
+    let (sleepiest_minute, ..) = minutes_asleep[&guard_id]
         .iter()
-        .max_by_key(|&(_, freq)| freq)
-        .map(|(&minute, _)| minute)
+        .enumerate()
+        .max_by_key(|(_, freq)| -> u32 { **freq })
+        .expect("Iterator of sleepy minutes should not be empty");
+    Some(sleepiest_minute as u32)
 }
 
 type GuardID = u32;
@@ -124,7 +126,7 @@ type GuardID = u32;
 type EventsByGuard = HashMap<GuardID, Vec<Event>>;
 
 // maps guard to minutes asleep frequency
-type GuardSleepFrequency = HashMap<GuardID, HashMap<u32, u32>>;
+type GuardSleepFrequency = HashMap<GuardID, [u32; 60]>;
 
 /// An iterator that coalesces "asleep" and "wakeup" events into ranges of
 /// minutes slept.
