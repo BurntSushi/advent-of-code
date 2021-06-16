@@ -116,10 +116,7 @@ impl FromStr for Claim {
             ").unwrap();
         }
 
-        let caps = match RE.captures(s) {
-            None => return err!("unrecognized claim"),
-            Some(caps) => caps,
-        };
+        let caps = RE.captures(s).ok_or("unrecognized claim")?;
         Ok(Claim {
             id: caps["id"].parse()?,
             x: caps["x"].parse()?,
