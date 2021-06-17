@@ -53,7 +53,7 @@ fn main() -> Result<()> {
     // create a by-minute frequency map for each guard
     let mut minutes_asleep: GuardSleepFrequency = HashMap::new();
     for (&guard_id, events) in events_by_guard.iter() {
-        let mut freq: [u32; 60] = [0; 60];
+        let mut freq: [u32; 59] = [0; 59];
         for result in MinutesAsleepIter::new(events) {
             for minute in result? {
                 freq[minute as usize] += 1;
@@ -126,7 +126,7 @@ type GuardID = u32;
 type EventsByGuard = HashMap<GuardID, Vec<Event>>;
 
 // maps guard to minutes asleep frequency
-type GuardSleepFrequency = HashMap<GuardID, [u32; 60]>;
+type GuardSleepFrequency = HashMap<GuardID, [u32; 59]>;
 
 /// An iterator that coalesces "asleep" and "wakeup" events into ranges of
 /// minutes slept.
